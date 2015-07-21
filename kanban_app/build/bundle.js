@@ -44,7 +44,9 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var component = __webpack_require__(1);
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./stylesheets/main.css\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var component = __webpack_require__(2);
 	var app = document.createElement('div');
 
 	document.body.appendChild(app);
@@ -53,12 +55,13 @@
 
 
 /***/ },
-/* 1 */
+/* 1 */,
+/* 2 */
 /***/ function(module, exports) {
 
 	module.exports = function () {
 	  var element = document.createElement('h1');
-	  element.innerHTML = 'Hello world';
+	  element.innerHTML = 'Hello worlds!';
 	  return element;
 	};
 
