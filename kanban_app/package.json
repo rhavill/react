@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "start": "webpack-dev-server --port 4000 --config webpack.development.js --devtool eval-source --progress --colors --hot --inline --history-api-fallback --content-base build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "node-libs-browser": "^0.5.2",
-    "webpack": "^1.10.1"
+    "webpack": "^1.10.1",
+    "webpack-dev-server": "^1.10.1"
   }
 }
