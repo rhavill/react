@@ -1,8 +1,25 @@
 import React from 'react';
-import Note from './Note';
+import Notes from './Notes';
 
 export default class App extends React.Component {
   render() {
-    return <Note />;
+    var notes = [{
+      task: 'Learn some webpack'
+    }, {
+      task: 'Learn React'
+    }, {
+      task: 'Do laundry'
+    }];
+
+    return (
+      <div>
+        <button onClick={() => this.addItem()}>+</button>
+        <Notes items={notes} />
+      </div>
+    );
+  }
+  addItem() {
+    console.log('add item');
   }
 }
+

@@ -2,7 +2,6 @@ import React from 'react';
 
 export default class Note extends React.Component {
   render() {
-    return <div>Learn some webpack</div>;
+    return <div>{this.props.value}</div>;
   }
 }
-
