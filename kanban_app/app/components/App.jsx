@@ -21,10 +21,21 @@ export default class App extends React.Component {
     return (
       <div>
         <button onClick={() => this.addItem()}>+</button>
-        <Notes items={notes} />
+        <Notes items={notes} onEdit={(i, task) => this.itemEdited(i, task)}/>
       </div>
     );
   }
+
+  itemEdited(i, task) {
+    var notes = this.state.notes;
+
+    notes[i].task = task;
+
+    this.setState({
+      notes: notes
+    });
+  }
+
   addItem() {
     this.setState({
       notes: this.state.notes.concat([{
