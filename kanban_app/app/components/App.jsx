@@ -2,14 +2,21 @@ import React from 'react';
 import Notes from './Notes';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      notes: [{
+        task: 'Learn some webpack'
+      }, {
+        task: 'Learn React'
+      }, {
+        task: 'Do laundry'
+      }
+      ]
+    };
+  }
   render() {
-    var notes = [{
-      task: 'Learn some webpack'
-    }, {
-      task: 'Learn React'
-    }, {
-      task: 'Do laundry'
-    }];
+    var notes = this.state.notes;
 
     return (
       <div>
@@ -19,7 +26,11 @@ export default class App extends React.Component {
     );
   }
   addItem() {
-    console.log('add item');
+    this.setState({
+      notes: this.state.notes.concat([{
+        task: 'New task'
+      }])
+    });
   }
 }
 
