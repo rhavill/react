@@ -20,16 +20,6 @@ var common = {
       {
         test: /\.css$/,
         loaders: ['style', 'css']
-      },
-      {
-        // test for both js and jsx
-        test: /\.jsx?$/,
-
-        // use babel loader with Stage 1 features
-        loader: 'babel?stage=1',
-
-        // operate only on our app directory
-        include: path.resolve(ROOT_PATH, 'app')
       }
     ]
   },
@@ -43,6 +33,15 @@ var common = {
 // we'll extend these later and use merge then
 if(TARGET === 'build') {
   module.exports = merge(common, {
+    module: {
+      loaders: [
+        {
+          test: /\.jsx?$/,
+          loader: 'babel?stage=1',
+          include: path.resolve(ROOT_PATH, 'app')
+        }
+      ]
+    },
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
@@ -60,6 +59,20 @@ if(TARGET === 'build') {
 }
 
 if(TARGET === 'dev') {
-  module.exports = common;
+  module.exports = merge(common, {
+    entry: [
+      'webpack-dev-server/client?http://0.0.0.0:4000',
+      'webpack/hot/dev-server'
+    ],
+    module: {
+      loaders: [
+        {
+          test: /\.jsx?$/,
+          loaders: ['react-hot', 'babel?stage=1'],
+          include: path.resolve(ROOT_PATH, 'app'),
+        },
+      ],
+    },
+  });
 }
 
