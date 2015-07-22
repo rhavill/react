@@ -10,7 +10,7 @@ export default class App extends React.Component {
       }, {
         task: 'Learn React'
       }, {
-        task: 'Do laundry'
+        task: 'Do the laundry'
       }
       ]
     };
