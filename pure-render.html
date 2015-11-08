@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Counter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.2/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+
+  </head>
+  <body>
+    <div id="content"></div>
+    
+<script type="text/babel">
+      // To get started with this tutorial running your own code, simply remove
+      // the script tag loading scripts/example.js and start writing code here.
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+/**
+ * Performs equality by iterating through keys on an object and returning false
+ * when any key has values which are not strictly equal between the arguments.
+ * Returns true when the values of all keys are strictly equal.
+ */
+function shallowEqual(objA, objB) {
+  if (objA === objB) {
+    return true;
+  }
+
+  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
+    return false;
+  }
+
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // Test for A's keys different from B.
+  var bHasOwnProperty = hasOwnProperty.bind(objB);
+  for (var i = 0; i < keysA.length; i++) {
+    if (!bHasOwnProperty(keysA[i])) {
+      return false;
+    }
+    else if (objA[keysA[i]] !== objB[keysA[i]]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+
+function shallowCompare(instance, nextProps, nextState) {
+  return !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState);
+}
+
+var PureRenderMixin = {
+  shouldComponentUpdate: function (nextProps, nextState) {
+    var shouldUpdate = shallowCompare(this, nextProps, nextState);
+    return shouldUpdate;
+  }
+};
+
+var CounterApp = React.createClass({
+  getInitialState: function() {
+    return {
+      count: 0,
+      data: {
+        count: 0
+      }
+    };
+  },
+  increment: function() {
+    this.setState({
+      count: this.state.count + 1,
+      data: {
+        count: this.state.data.count + 1
+      }
+    });
+  },
+  badIncrement: function() {
+    var state = this.state;
+    state.count = this.state.count + 1;
+    // The cnage made to state.data.count is not detected by PureRenderMixin
+    // because the "data" property of the "state" object is also a reference
+    // to the "data" propertey of this.state
+    state.data.count = this.state.data.count + 1; 
+    this.setState(state);
+  },
+  same: function() {
+    var state = this.state;
+    state.data = this.state.data;
+    this.setState(state);
+    //this.setState(this.state); this is also correct
+  },
+  badSame: function() {
+    var state = {
+      count: this.state.count,
+      data : {
+        count: this.state.data.count
+      }
+    };
+    this.setState(state);
+  },
+  render: function () {
+    return (
+      <div>
+        <button onClick={this.increment}>increment</button>
+        <button onClick={this.badIncrement}>bad increment</button>
+        <button onClick={this.same}>same</button>
+        <button onClick={this.badSame}>bad same</button>
+        <Counter count={this.state.count}/>
+        <DeepCounter data={this.state.data}/>
+      </div>
+    )
+  }
+});
+
+var Counter = React.createClass({
+  mixins: [PureRenderMixin],
+  render: function() {
+    console.log('rendering count', this.props.count);
+    return (
+      <div>
+        Count: {this.props.count}.
+      </div>
+    );
+  }
+});
+
+var DeepCounter = React.createClass({
+  mixins: [PureRenderMixin],
+  render: function() {
+    console.log('rendering deep count', this.props.data.count);
+    return (
+      <div>
+        Deep Count: {this.props.data.count}.
+      </div>
+    );
+  }
+});
+
+ReactDOM.render(
+  <CounterApp />,
+  document.getElementById('content')
+);
+    </script>
+  </body>
+</html>
